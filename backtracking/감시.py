@@ -1,5 +1,4 @@
 import sys
-from collections import deque
 input = sys.stdin.readline
 
 N, M = map(int, input().split())
@@ -30,16 +29,14 @@ def calculate(graph):
         cnt += 1
   return cnt
 
-def dfs(cctv, graph):
-  if not cctv:
+def dfs(depth, graph):
+  if depth == len(cctv):
     global result
     result = min(calculate(graph), result)
     return 
-  v = cctv.popleft()
-  num, x, y = v
+  num, x, y = cctv[depth]
   for perfo in performance[num]:
-    dfs(cctv, simulate(graph, perfo, x, y))
-  cctv.append(v)
+    dfs(depth+1, simulate(graph, perfo, x, y))
 
 dr = [-1, 0, 1, 0] #상우하좌
 dc = [0, 1, 0, -1]
@@ -53,7 +50,7 @@ performance = [
   [[0,1,2,3]]
 ]
 
-cctv = deque([])
+cctv = []
 for i in range(N):
   for j in range(M):
     if 0 < data[i][j] < 6:
@@ -61,5 +58,5 @@ for i in range(N):
 
 result = 1e9
 
-dfs(cctv, data)
+dfs(0, data)
 print(result)
