@@ -18,14 +18,9 @@ def dfs(left_ck, at):
     return
   for i in range(at, C):
     x, y = chicken[i]
-    if (C-M) < M: #제거하는 치킨집 뽑기
-      left_ck.remove((x,y))
-      dfs(left_ck, i+1)
-      left_ck.append((x,y))
-    else: #남겨두는 치킨
-      left_ck.append((x,y))
-      dfs(left_ck, i+1)
-      left_ck.remove((x,y))
+    left_ck.append((x,y))
+    dfs(left_ck, i+1)
+    left_ck.remove((x,y))
 
 N, M = map(int, input().split())
 data = [list(map(int, input().split())) for _ in range(N)]
@@ -40,8 +35,5 @@ for i in range(N):
 C = len(chicken)
 
 result = INF
-if (C-M) < M: #제거할 치킨집 뽑기
-  dfs(chicken.copy(), 0)
-else:
-  dfs([], 0) #남겨둘 치킨집 뽑기
+dfs([], 0) #남겨둘 치킨집 뽑기
 print(result)
