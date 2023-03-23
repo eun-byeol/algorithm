@@ -11,9 +11,7 @@ for _ in range(T):
 
 
 def cycle(x, d, k):
-    for i in range(N):
-        if (i+1) % x != 0:
-            continue
+    for i in range(x-1, N, x):
         if d == 0: 
             graph[i].rotate(k)
         elif d == 1:
@@ -28,7 +26,7 @@ def update():
             if graph[i][j] != 0:
                 cnt += 1
     if cnt == 0:
-        return
+        return False
     average = sum / cnt
 
     for i in range(N):
@@ -37,6 +35,7 @@ def update():
                 graph[i][j] += 1
             elif graph[i][j] > average: 
                 graph[i][j] -= 1
+    return True
 
 def bfs(a, b, visited):
     q = deque([ (a, b) ])
@@ -71,13 +70,15 @@ def delete():
                 delete_flag = 1
     if not delete_flag:
         return update()
+    return True
 
 dr = [1, -1, 0, 0]
 dc = [0, 0, 1, -1]
 
 for x, d, k in command:
     cycle(x, d, k)
-    delete()
+    if not delete():
+        break
 
 result = 0
 for i in range(N):
