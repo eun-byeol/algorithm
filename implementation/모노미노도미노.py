@@ -48,9 +48,7 @@ def get_score(bord):
                 break
         if flag:
             score += 1
-            for c in range(0, 4): # 삭제
-                bord[i][c] = 0
-            for r in range(i, 0, -1): # 당기기
+            for r in range(i, 0, -1): # 덮어 씌우기
                 for c in range(0, 4):
                     bord[r][c] = bord[r-1][c]
             for c in range(0, 4):
@@ -64,10 +62,7 @@ def update_special_zone(bord):
             if bord[i][j] == 1:
                 cnt += 1
                 break
-    for r in range(5, 5-cnt, -1):
-        for c in range(0, 4):
-            bord[r][c] = 0
-    for r in range(5, -1+cnt, -1):
+    for r in range(5, -1+cnt, -1): # 덮어 씌우기
         for c in range(0, 4):
             bord[r][c] = bord[r-cnt][c]
     for r in range(0, 2):
