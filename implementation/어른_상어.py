@@ -1,4 +1,5 @@
 import sys
+import copy
 input = sys.stdin.readline
 
 N, M, k = map(int, input().split())
@@ -15,32 +16,28 @@ for i in range(1, M+1):
 direction = {}
 for i in range(1, M+1):
     data = [list(map(int, input().split())) for _ in range(4)]
-    direction[i] = data
+    direction[i] = data # 0번부터 위,아래,왼,오
 
 def update_position(num, shark, graph, time):
     x, y, d = shark[num]
     d_info = direction[num][d-1]
-    # print(num, x, y, d, d_info)
     for idx in d_info:
         nx = x + dr[idx]
         ny = y + dc[idx]
         if nx < 0 or nx >= N or ny < 0 or ny >= N: continue
-        if graph[nx][ny][0] == -1:
-            shark[num][0], shark[num][1], shark[num][2] = nx, ny, idx #위치정보 갱신
-            # print("next=", nx, ny, idx)
+        if graph[nx][ny][0] == 0:
+            shark[num][:] = nx, ny, idx
             return True
-        if time - graph[nx][ny][0] >= k: # 냄새가 사라진 경우
-            shark[num][0], shark[num][1], shark[num][2] = nx, ny, idx #위치정보 갱신
-            # print("냄새X next=", nx, ny, idx)
+        if time - k > graph[nx][ny][0]: # 냄새가 사라진 경우
+            shark[num][:] = nx, ny, idx
             return True
-    # 빈칸이 없었으면
+    # 빈칸이 없었는 경우
     for idx in d_info:
         nx = x + dr[idx]
         ny = y + dc[idx]
         if nx < 0 or nx >= N or ny < 0 or ny >= N: continue
         if graph[nx][ny][1] == num:
-            shark[num][0], shark[num][1], shark[num][2] = nx, ny, idx
-            # print("노 빈칸 next=", nx, ny, idx)
+            shark[num][:] = nx, ny, idx
             return True
     return False  
 
@@ -48,36 +45,37 @@ def update_position(num, shark, graph, time):
 dr = [0, -1, 1, 0, 0] #위, 아래, 왼쪽, 오른쪽
 dc = [0, 0, 0, -1, 1]
 
-graph = [[[-1,-1] for _ in range(N)] for _ in range(N)]
+graph = [[[0,0] for _ in range(N)] for _ in range(N)]
 
-# for g in graph:
-#     print(g)
+for num in range(1, M+1):
+    x, y, d = shark[num]
+    graph[x][y][:] = 1, num
 
 count = M
 result = -1
-for time in range(1001):
+
+for time in range(2, 1002):
+    graph_copy = copy.deepcopy(graph)
     for num in range(1, M+1):
         x, y, d = shark[num]
-        if x == -1: 
+        if x == -1: # 삭제된 상어
             continue
+        update_position(num, shark, graph_copy, time)
+        x, y, d = shark[num]
         if graph[x][y][0] == time:
             if graph[x][y][1] < num:
                 shark[num][0] = -1 # 현재 상어 제거
             else:
-                shark[graph[x][y]][0] = -1 # 기존 상어 제거
+                shark[graph[x][y]][0] = 0 # 기존 상어 제거
                 graph[x][y][1] = num
             count -= 1
             if count == 1: 
                 break
         else:
-            graph[x][y][0], graph[x][y][1] = time, num
+            graph[x][y][:] = time, num
         if shark[num][0] == -1: 
             continue
-        update_position(num, shark, graph, time)
     if count == 1:
-        result = time
+        result = time - 1
         break
-    # for g in graph:
-    #     print(g)
-    # print("time = ", time, "\n----------------")
 print(result)
