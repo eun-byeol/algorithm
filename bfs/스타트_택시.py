@@ -24,9 +24,9 @@ def find_customer(x, y):
         visited[r][c] = 1
         if dist > min_dist:
             break
-        if graph[r][c] > 1 and min_dist >= dist: #손님
+        if graph[r][c] > 1:
             min_dist = dist
-            customer.append((r, c, graph[r][c], dist))
+            customer.append((r, c, dist))
         for i in range(4):
             nr = r + dr[i]
             nc = c + dc[i]
@@ -36,16 +36,16 @@ def find_customer(x, y):
                 q.append((nr, nc, dist + 1))
                 visited[nr][nc] = 1
     if len(customer) == 0:
-        return -1, -1, -1, -1
-    customer = sorted(customer, key = lambda x : (x[0], x[1]))
+        return -1, -1, -1
+    customer.sort(key = lambda x: (x[0], x[1]))
     return customer[0]
 
-def drive(start_x, start_y, cust_num):
+def drive(x, y, cust_num):
     visited = [[0] * N for _ in range(N)]
-    q = deque([ (start_x, start_y, 0) ])
+    q = deque([ (x, y, 0) ])
+    visited[x][y] = 1
     while q:
         r, c, dist = q.popleft()
-        visited[r][c] = 1
         if (r, c) == destination[cust_num]:
             return r, c, dist
         for i in range(4):
@@ -64,12 +64,13 @@ dc = [0, 1, 0, -1]
 min_dist = INF
 
 for _ in range(M):
-    taxi_x, taxi_y, cus_num, cus_dist = find_customer(taxi_x, taxi_y)
+    taxi_x, taxi_y, cus_dist = find_customer(taxi_x, taxi_y)
     if taxi_x == -1:
         gas = -1
         break
-    gas -= cus_dist
+    cus_num = graph[taxi_x][taxi_y]
     graph[taxi_x][taxi_y] = 0
+    gas -= cus_dist
     if gas <= 0:
         gas = -1
         break
