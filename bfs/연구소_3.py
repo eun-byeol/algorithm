@@ -9,11 +9,9 @@ data = [list(map(int, input().split())) for _ in range(N)]
 
 def simul(combi, data, remain):
     result = 0
-    tmp = [d[:] for d in data]
-    visited = [[0] * N for _ in range(N)]
+    visited = [d[:] for d in data]
     for i, j, t in combi:
-        visited[i][j] = 1
-        tmp[i][j] = -2
+        visited[i][j] = -2
     q = deque(combi)
     while q:
         r, c, time = q.popleft()
@@ -22,15 +20,14 @@ def simul(combi, data, remain):
         for d in range(4):
             nr = r + dr[d]
             nc = c + dc[d]
-            if nr < 0 or nr >= N or nc < 0 or nc >= N or visited[nr][nc]:
+            if nr < 0 or nr >= N or nc < 0 or nc >= N:
                 continue
-            if tmp[nr][nc] == 0 or tmp[nr][nc] == -1:
-                if tmp[nr][nc] == 0:
+            if visited[nr][nc] == 0 or visited[nr][nc] == -1:
+                if visited[nr][nc] == 0:
                     remain -= 1
                 q.append((nr, nc, time+1))
                 result = time + 1
-                visited[nr][nc] = 1
-                tmp[nr][nc] = time + 1
+                visited[nr][nc] = time + 1
     return INF
     
 virus = []
@@ -51,6 +48,5 @@ for combi in combinations(virus, M):
     result = min(result, simul(combi, data, remain))
 
 if result == INF:
-    print(-1)
-else:
-    print(result)
+    result = -1
+print(result)
