@@ -1,0 +1,12 @@
+def dfs(idx, total, answer, numbers, target):
+    if idx == len(numbers):
+        if total == target:
+            answer += 1
+        return answer
+    answer = dfs(idx+1, total+numbers[idx], answer, numbers, target)
+    answer = dfs(idx+1, total-numbers[idx], answer, numbers, target)
+    return answer
+
+def solution(numbers, target):
+    answer = dfs(0, 0, 0, numbers, target)
+    return answer
