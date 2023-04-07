@@ -1,10 +1,8 @@
-from bisect import bisect_left
 def solution(citations):
-    answer = 0
     citations.sort()
     length = len(citations)
-    for h in range(length, -1, -1):
-        if length - bisect_left(citations, h) >= h:
-            answer = h
-            break
-    return answer
+    for i, c in enumerate(citations):
+        cnt = length - i
+        if c >= cnt:
+            return cnt
+    return 0
