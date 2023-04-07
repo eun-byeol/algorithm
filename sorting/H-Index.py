@@ -3,7 +3,7 @@ def solution(citations):
     answer = 0
     citations.sort()
     length = len(citations)
-    for h in range(citations[-1], -1, -1):
+    for h in range(length, -1, -1):
         if length - bisect_left(citations, h) >= h:
             answer = h
             break
