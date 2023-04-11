@@ -12,3 +12,16 @@ def solution(people, limit):
     if left:
         answer += 1
     return answer
+
+# ver. 투포인터
+def solution(people, limit):
+    people.sort()
+    start = 0
+    end = len(people) - 1
+    pair_num = 0
+    while start < end:
+        if people[start] + people[end] <= limit:
+            start += 1
+            pair_num += 1
+        end -= 1
+    return len(people) - pair_num
