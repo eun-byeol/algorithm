@@ -17,16 +17,15 @@ def bfs(cx, cy, ix, iy, graph):
     return -1
 
 def solution(rectangle, characterX, characterY, itemX, itemY):
-    graph = [[0] * 102 for _ in range(102)]
+    graph = [[1] * 102 for _ in range(102)]
     
-    for x1, y1, x2, y2 in rectangle:
-        for r in range(x1*2, x2*2+1):
-            for c in range(y1*2, y2*2+1):
-                graph[r][c] = -1
-                
-    for x1, y1, x2, y2 in rectangle:
-        for r in range(x1*2+1, x2*2):
-            for c in range(y1*2+1, y2*2):
-                graph[r][c] = 0
+    for rec in rectangle:
+        x1, y1, x2, y2 = map(lambda x : x*2, rec)
+        for r in range(x1, x2+1):
+            for c in range(y1, y2+1):
+                if x1 < r < x2 and y1 < c < y2:
+                    graph[r][c] = 0
+                elif graph[r][c] != 0:
+                    graph[r][c] = -1
 
     return bfs(characterX*2, characterY*2, itemX*2, itemY*2, graph)
