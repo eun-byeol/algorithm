@@ -1,31 +1,27 @@
-from collections import defaultdict, deque
+from collections import deque
 def is_changable(w1, w2):
     cnt = 0
     for i in range(len(w1)):
         if w1[i] != w2[i]:
             cnt += 1
+        if cnt > 1:
+            return False
     return cnt == 1
-
-def bfs(begin, target, graph):
-    q = deque([(begin, 0)])
-    visited = [begin]
+        
+def bfs(begin, target, words):
+    visited = [0] * len(words)
+    q = deque()
+    q.append((begin, 0))
     while q:
         cur, dist = q.popleft()
         if cur == target:
             return dist
-
-        for nxt in graph[cur]:
-            if nxt not in visited:
-                q.append((nxt, dist+1))
-                visited.append(nxt)
+        for i, word in enumerate(words):
+            if not visited[i] and is_changable(word, cur):
+                visited[i] = 1
+                q.append((word, dist+1))
     return 0
-
+                
 def solution(begin, target, words):
-    graph = defaultdict(set)
-    for w1 in words:
-        for w2 in words:
-            if is_changable(w1, w2):
-                graph[w1].add(w2)
-        if is_changable(begin, w1):
-            graph[begin].add(w1)
-    return bfs(begin, target, graph)
+    answer = bfs(begin, target, words)
+    return answer
