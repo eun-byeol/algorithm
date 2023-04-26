@@ -14,16 +14,13 @@ class Solution {
             if (cy < x) {
                 continue;
             }
-            if (cy-n == x) return cnt+1;
             q.add(new int[]{cy-n, cnt+1});
             
             if (cy % 2 == 0) {
-                if (cy/2 == x) return cnt+1;
                 q.add(new int[]{cy/2, cnt+1});
             } 
 
             if (cy % 3 == 0) {
-                if (cy/3 == x) return cnt+1;
                 q.add(new int[]{cy/3, cnt+1});
             }
         }
