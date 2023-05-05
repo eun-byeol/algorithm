@@ -27,7 +27,5 @@ def solution(line):
           
     for x, y in zip(point_x, point_y):
         board[max_r-y][abs(min_c-x)] = "*"
-    answer = []
-    for bd in board:
-        answer.append(''.join(bd))
-    return answer
+
+    return list(map(''.join, board))
