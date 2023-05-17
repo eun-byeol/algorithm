@@ -1,14 +1,11 @@
-def recursive(depth, total, N, M):
-    global answer
-    if depth == M:
-        answer = total
-        return
-    recursive(depth+1, total*N, N, M)
+def recursive(cnt, N):
+    if cnt == 0:
+        return 1
+    return N * recursive(cnt-1, N)
 
 T = 10
 for _ in range(1, T + 1):
     test_case = int(input())
     N, M = map(int, input().split())
-    answer = 0
-    recursive(1, N, N, M)
+    answer = recursive(M, N)
     print(f"#{test_case} {answer}")
