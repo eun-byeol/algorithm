@@ -1,11 +1,8 @@
 def is_valid(n):
-    pre = n % 10
-    while n > 0:
-        cur = n % 10
-        if cur > pre:
+    s = str(n)
+    for i in range(len(s)-1):
+        if s[i] > s[i+1]:
             return False
-        pre = cur
-        n //= 10
     return True
 
 def solve(N, nums):
