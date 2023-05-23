@@ -31,16 +31,13 @@ def dfs(my_r, my_c, your_r, your_c, board, N, M):
         if not is_succeed: # 내가 이기는 경우 -> 최소 이동 횟수
             is_winner = True
             min_move = min(move, min_move)
-        elif not is_winner: # 내가 지는 경우 -> 최대 이동 횟수
+        else: # 내가 지는 경우 -> 최대 이동 횟수
             max_move = max(move, max_move)
-    my_move = min_move + 1
-    if not is_winner:
-        my_move = max_move + 1
-    return is_winner, my_move
+    my_move = min_move if is_winner else max_move
+    return is_winner, my_move + 1
         
 def solution(board, aloc, bloc):
-    answer = int(1e9)
     N = len(board)
     M = len(board[0])
-    flag, answer = dfs(aloc[0], aloc[1], bloc[0], bloc[1], board, N, M)
+    is_winner, answer = dfs(aloc[0], aloc[1], bloc[0], bloc[1], board, N, M)
     return answer
