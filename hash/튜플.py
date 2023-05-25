@@ -1,11 +1,7 @@
-import re
-
 def make_data(s):
     data = []
-    groups = re.split("{|}|,{", s[1:-1])
+    groups = s[2:-2].split("},{")
     for group in groups:
-        if group == '':
-            continue
         g = []
         for num in group.split(','):
             g.append(int(num))
