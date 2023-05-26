@@ -1,12 +1,9 @@
-from collections import deque
+from collections import deque, defaultdict
 def divide(p):
-    op, cl = 0, 0    
+    cnt = defaultdict(int)
     for i, v in enumerate(p):
-        if v == '(':
-            op += 1
-        else:
-            cl += 1
-        if op == cl:
+        cnt[v] += 1
+        if cnt['('] == cnt[')']:
             return p[:i+1], p[i+1:]
     return p, ""
 
@@ -24,10 +21,7 @@ def is_valid(u):
 def reverse(u):
     s = ""
     for v in u:
-        if v == '(':
-            s += ')'
-        else:
-            s += '('
+        s += ')' if v == '(' else '('
     return s
             
 def solve(p):
