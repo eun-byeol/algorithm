@@ -1,13 +1,10 @@
 import math
-def go(L, mid, r, a, b):
+def go(size, mid, r, a, b):
     global answer
-    if r == 1:
-        answer = r
-        return
     if a <= mid and b <= mid:
-        go(L//2, mid - L//2, r-1, a, b)
+        go(size//2, mid - size//2, r-1, a, b)
     elif a > mid and b > mid:
-        go(L//2, mid + L//2, r-1, a, b)
+        go(size//2, mid + size//2, r-1, a, b)
     else:
         answer = r
         return 
