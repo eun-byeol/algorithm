@@ -1,0 +1,44 @@
+def decode(t):
+    return int(t[0:2]) * 3600 + int(t[3:5]) * 60 + int(t[6:8])
+
+def encode(s):
+    answer = ''
+    time = [0, 0, 0] # h, m, s
+    time[0] = s // 3600
+    s %= 3600
+    time[1] = s // 60
+    time[2] = s % 60
+    
+    for i, t in enumerate(time):
+        if t < 10:
+            answer += "0"
+        answer += str(t)
+        if i != 2:
+            answer += ":"
+    return answer
+    
+    
+def solution(play_time, adv_time, logs):
+    N = decode(play_time)
+    total_time = [0] * (N+1)
+    
+    for log in logs:
+        start = decode(log[:8])
+        end = decode(log[9:])
+        total_time[start] += 1
+        total_time[end] -= 1
+    
+    for j in range(2):
+        for i in range(N-1):
+            total_time[i+1] += total_time[i]
+    
+    K = decode(adv_time)
+    max_time = 0
+    start_s = 0
+    
+    for i in range(K-1, N):
+        cur_time = total_time[i] - total_time[i - K]
+        if cur_time > max_time:
+            max_time = cur_time
+            start_s = i - K + 1
+    return encode(start_s)
