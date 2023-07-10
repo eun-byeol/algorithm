@@ -1,25 +1,10 @@
-import sys
-import re
-inputs = sys.stdin.readline()
-nums = list(map(int, re.split(r'[-+]', inputs)))
-tmp = re.split('\d', inputs)
-ops = []
-for op in tmp:
-    if op == "+" or op == "-":
-        ops.append(op)
+sp_input = input().split('-')
+total = 0
 
-total = nums[0]
-st = []
-for op, n in zip(ops, nums[1:]):
-    if op == "-":
-        while st:
-            total -= st.pop()
-        st.append(n)
-        continue
-    if st:
-        st.append(n)
-    else:
-        total += n
-while st:
-    total -= st.pop()
+for num in sp_input[0].split('+'):
+    total += int(num)
+
+for arr in sp_input[1:]:
+    for num in arr.split('+'):
+        total -= int(num)
 print(total)
