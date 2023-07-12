@@ -1,6 +1,7 @@
 INF = int(1e9)
 dr = [0, -1, -1, -1]
 dc = [-1, -1, 0, 1]
+
 def solve(graph, N):
     dist = [[INF] * 3 for _ in range(N)]
     dist[0][1] = graph[0][1]
@@ -16,15 +17,12 @@ def solve(graph, N):
                     dist[r][c] = dist[pr][pc] + graph[r][c]
     return dist[N - 1][1]
 
-tc = 0
+tc = 1
 while True:
-    tc += 1
     N = int(input())
-    graph = []
     if N == 0:
         break
-    for _ in range(N):
-        line = list(map(int, input().split()))
-        graph.append(line)
+    graph = [list(map(int, input().split())) for _ in range(N)]
     ans = solve(graph, N)
     print(f"{tc}. {ans}")
+    tc += 1
