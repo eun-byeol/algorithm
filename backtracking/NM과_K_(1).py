@@ -1,28 +1,34 @@
-def is_valid(i, j, history):
-    for x, y in history:
-        if abs(x - i) + abs(y - j) == 1:
-            return False
-    return True
+N, M, K = map(int, input().split())
+data = [list(map(int, input().split())) for _ in range(N)]
 
-def dfs(depth, total, history, r, c):
+ans = -int(1e9)
+visited = [[False] * M for _ in range(N)]
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, 1, -1]
+
+def is_visited(x, y):
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if 0 <= nx < N and 0 <= ny < M:
+            if visited[nx][ny]:
+                return True
+    return False
+
+def dfs(r, c, depth, total):
     global ans
-    his = [h for h in history]
     if depth == K:
         ans = max(ans, total)
         return
-    for i in range(r, N):
-        for j in range(c+1 if i == r else 0, M):
-            if not is_valid(i, j, his):
+    for x in range(r, N):
+        for y in range(c if x == r else 0, M):
+            if visited[x][y]:
                 continue
-            his.append((i, j))
-            dfs(depth + 1, total + data[i][j], his, i, j)
-            his.pop()
+            if not is_visited(x, y):
+                visited[x][y] = True
+                dfs(x, y, depth+1, total+data[x][y])
+                visited[x][y] = False
 
-N, M, K = map(int, input().split())
-data = [list(map(int, input().split())) for _ in range(N)]
-ans = -int(1e9)
-
-for i in range(N):
-    for j in range(M):
-        dfs(1, data[i][j], [(i, j)], i, j)
+dfs(0, 0, 0, 0)
 print(ans)
