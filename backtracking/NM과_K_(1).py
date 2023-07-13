@@ -4,33 +4,25 @@ def is_valid(i, j, history):
             return False
     return True
 
-def dfs(depth, total, history, r, c, N, M, K, data):
+def dfs(depth, total, history, r, c):
     global ans
     his = [h for h in history]
     if depth == K:
         ans = max(ans, total)
         return
     for i in range(r, N):
-        for j in range(M):
-            if i == r and j <= c:
-                continue
+        for j in range(c+1 if i == r else 0, M):
             if not is_valid(i, j, his):
                 continue
             his.append((i, j))
-            dfs(depth + 1, total + data[i][j], his, i, j, N, M, K, data)
+            dfs(depth + 1, total + data[i][j], his, i, j)
             his.pop()
 
-def solve():
-    global ans
-    N, M, K = map(int, input().split())
-    data = []
-    for _ in range(N):
-        data.append(list(map(int, input().split())))
-    ans = -int(1e9)
+N, M, K = map(int, input().split())
+data = [list(map(int, input().split())) for _ in range(N)]
+ans = -int(1e9)
 
-    for i in range(N):
-        for j in range(M):
-            dfs(1, data[i][j], [(i,j)], i, j, N, M, K, data)
-    print(ans)
-
-solve()
+for i in range(N):
+    for j in range(M):
+        dfs(1, data[i][j], [(i, j)], i, j)
+print(ans)
