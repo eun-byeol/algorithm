@@ -2,16 +2,10 @@ N, M = map(int, input().split())
 dp = [[0] * (M+1) for _ in range(N+1)]
 dp[0][0] = 1
 
-dr = [0, 1, 1]
-dc = [1, 0, 1]
-mod = 1000000007
+mod = int(1e9) + 7
 
-for r in range(N):
-    for c in range(M):
-        for i in range(3):
-            nr = r + dr[i]
-            nc = c + dc[i]
-            dp[nr][nc] += dp[r][c]
-            dp[nr][nc] %= mod
+for r in range(1, N+1):
+    for c in range(1, M+1):
+        dp[r][c] = (dp[r][c-1] + dp[r-1][c] + dp[r-1][c-1]) % mod
 
-print(dp[N-1][M-1])
+print(dp[N][M])
