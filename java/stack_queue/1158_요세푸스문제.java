@@ -1,5 +1,5 @@
-import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
 
 public class Main {
@@ -10,20 +10,24 @@ public class Main {
 		int N = sc.nextInt();
 		int K = sc.nextInt();
 		
-		List<Integer> nums = new LinkedList<>();
-		for (int i=0; i<N; i++) {
-			nums.add(i+1);
-		}
+		Deque<Integer> q = new ArrayDeque<>();
 		
-		int start = 0;
+		for (int i=1; i<N+1; i++) {
+			q.offer(i);
+		}
+
 		sb.append("<");
-		while (nums.size() > 1) {
-			int nextIdx = (start + K - 1) % nums.size();
-			sb.append(nums.remove(nextIdx)).append(", ");
-			start = nextIdx;
+		int cnt = 1;
+		while (q.size() > 1) {
+			if (cnt % K == 0) {
+				sb.append(q.pollFirst()).append(", ");
+			}
+			else {
+				q.addLast(q.pollFirst());
+			}
+			cnt++;
 		}
-		sb.append(nums.remove(0)).append(">");
-		
+		sb.append(q.poll()).append(">");
 		System.out.println(sb.toString());
 	}
 }
