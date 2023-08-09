@@ -3,6 +3,12 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+	static int[] dx5 = {0, 1, 0, -1};
+	static int[] dy5 = {1, 0, -1, 0};
+	
+	static int[] dx6 = {1, 0, -1, 0};
+	static int[] dy6 = {0, 1, 0, -1};
+	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -38,10 +44,10 @@ public class Main {
 				result = simul4(N, M, board);
 			}
 			else if (cmd == 5) {
-				result = simul5(N, M, board);
+				result = rotate(N, M, board, dx5, dy5);
 			}
 			else if (cmd == 6) {
-				result = simul6(N, M, board);
+				result = rotate(N, M, board, dx6, dy6);
 			}
 			N = result.length;
 			M = result[0].length;
@@ -64,43 +70,12 @@ public class Main {
 		}
 		System.out.println(sb.toString());
 	}
-	
-	
-	/*
-	 * 1<-2<-3<-4
-	 */
-	private static int[][] simul6(int n, int m, int[][] board) {
-		int[] dx = {1, 0, -1, 0};
-		int[] dy = {0, 1, 0, -1};
-		
-		int jumpN = n / 2;
-		int jumpM = m / 2;
-		
-		int[][] result = new int[n][m];
-		
-		int sx = 0;
-		int sy = 0;
-		for (int d = 0; d < 4; d++) {
-			for (int x = sx; x < sx + jumpN; x++) {
-				for (int y = sy; y < sy + jumpM; y++) {
-					int nx = x + dx[d] * jumpN;
-					int ny = y + dy[d] * jumpM;
-					result[nx][ny] = board[x][y];
-				}
-			}
-			sx += dx[d] * jumpN;
-			sy += dy[d] * jumpM;
-		}
-		return result;
-	}
 
 	/*
 	 * 1->2->3->4
+	 * 1<-2<-3<-4
 	 */
-	private static int[][] simul5(int n, int m, int[][] board) {
-		int[] dx = {0, 1, 0, -1};
-		int[] dy = {1, 0, -1, 0};
-		
+	private static int[][] rotate(int n, int m, int[][] board, int[] dx, int[] dy) {
 		int jumpN = n / 2;
 		int jumpM = m / 2;
 		
