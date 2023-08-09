@@ -1,7 +1,7 @@
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
@@ -10,36 +10,42 @@ public class Main {
 		
 		for (int i=0; i<L; i++) {
 			String password = br.readLine();
-			List<Character> result = new LinkedList<>();
 			
-			int idx = 0;
+			Deque<Character> result = new ArrayDeque<>();
+			Deque<Character> tmp = new ArrayDeque<>();
+			
 			for (int j=0; j<password.length(); j++) {
-				if (password.charAt(j) == '-') {
-					if (idx != 0) {
-						result.remove(idx-1);
-						idx--;
+				char v = password.charAt(j); 
+				if (v == '-') {
+					if (!result.isEmpty()) {
+						result.pollLast();						
 					}
 				}
-				else if (password.charAt(j) == '>') {
-					if (idx != result.size()) {
-						idx++;
+				else if (v == '<') {
+					if (!result.isEmpty()) {
+						tmp.offerFirst(result.pollLast());
 					}
 				}
-				else if (password.charAt(j) == '<') {
-					if (idx != 0) {
-						idx--;
+				else if (v == '>') {
+					if (!tmp.isEmpty()) {
+						result.offerLast(tmp.pollFirst());
 					}
 				}
 				else {
-					result.add(idx++, password.charAt(j));
+					result.offerLast(v);
 				}
 			}
 			
 			StringBuilder sb = new StringBuilder();
 			
-			for (Character c : result) {
-				sb.append(c);
+			while (!result.isEmpty()) {
+				sb.append(result.pollFirst());
+			}			
+			
+			while (!tmp.isEmpty()) {
+				sb.append(tmp.pollFirst());
 			}
+			
 			System.out.println(sb.toString());
 		}
 	}
