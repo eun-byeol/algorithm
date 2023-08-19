@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int[] arr = new int[100000]; // 배열 풀 사용
+	static String[] arr = new String[100000]; // 배열 풀 사용
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,7 +17,7 @@ public class Main {
 			StringTokenizer st = new StringTokenizer(br.readLine(), "[,]");
 			
 			for (int i=0; i<n; i++) {
-				arr[i] = Integer.parseInt(st.nextToken());
+				arr[i] = st.nextToken();
 			}
 			
 			int dir = 1;
