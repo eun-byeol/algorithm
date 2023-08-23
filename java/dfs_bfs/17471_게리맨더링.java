@@ -36,12 +36,12 @@ public class Main {
 		System.out.println(minDist);
 	}
 
-	private static void dfs(int size, int at, int[] rst) {
-		if (size > N/2) {
+	private static void dfs(int size, int at, int[] rst) { // 1: g1팀 , 0: g2팀
+		if (size > N/2) { // 팀  a 뽑는 조합 구하기 : 1 ~ N/2 개
 			return;
 		}
 		
-		if (size > 0) {
+		if (size > 0) { // 공집합 뽑는 경우는 제외
 			check(rst);
 		}
 		
@@ -54,8 +54,6 @@ public class Main {
 
 
 	private static void check(int[] rst) {
-		boolean[] visited = new boolean[N+1]; 
-		
 		Set<Integer> g1 = new HashSet<>();
 		Set<Integer> g2 = new HashSet<>();
 		int s1 = 0;
@@ -95,6 +93,7 @@ public class Main {
 		int cnt = 1;
 		Queue<Integer> q = new ArrayDeque<>();
 		boolean[] visited = new boolean[N+1];
+		
 		q.add(start);
 		visited[start] = true;
 		
@@ -113,6 +112,6 @@ public class Main {
 			}
 		}
 		
-		return cnt == S;
+		return false;
 	}
 }
