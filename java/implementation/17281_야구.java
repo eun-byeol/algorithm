@@ -58,49 +58,42 @@ public class Main {
 		for (int i=0; i<N; i++) {
 			int roo = 0;
 			int out = 0;
+			
 			while (out < 3) {
 				int player = playerOrder[idx];
 				int rst = inning[i][player];
-				if (rst == 0) {
+				
+				if (rst == 0) { // 아웃
 					out++;
 				}
-				else if (rst == 4) {
-					score++; // 타자
-					if ((1 & roo) > 0) {
-						score++;
-					}
-					if ((2 & roo) > 0) {
-						score++;
-					}
-					if ((4 & roo) > 0) {
-						score++;
+				
+				else if (rst == 4) { // 홈런
+					score++; // 타자 득점
+					for (int j=0; j<3; j++) {
+						if (((1 << j) & roo) > 0) {
+							score++;
+						}
 					}
 					roo = 0;
 				}
-				else {
-					roo = (roo << rst) + (1 << (rst-1)); // 111001
-					if ((8 & roo) > 0) {
-						score++;
-					}
-					if ((16 & roo) > 0) {
-						score++;
-					}
-					if ((32 & roo) > 0) {
-						score++;
+				
+				else { // 안타, 2,3루타
+					roo = (roo << rst) + (1 << (rst-1));
+					for (int j=3; j<7; j++) { // 스코어 추가 
+						if (((1 << j) & roo) > 0) {
+							score++;
+						}
 					}
 					
 					int tmp = 0;
-					if ((1 & roo) > 0) {
-						tmp += 1;
-					}
-					if ((2 & roo) > 0) {
-						tmp += 2;
-					}
-					if ((4 & roo) > 0) {
-						tmp += 4;
+					for (int j=0; j<3; j++) { // 진루 상태 갱신
+						if (((1 << j) & roo) > 0) {
+							tmp += (1 << j);
+						}
 					}
 					roo = tmp;
 				}
+				
 				idx = (idx+1) % 9;
 			}
 		}
