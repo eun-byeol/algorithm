@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main_17070_파이프옮기기1 {
+public class Main {
     static int[][] map;
     static int N;
     static int[] dx = {0, -1, -1}; // →, ↘, ↓
@@ -23,7 +23,7 @@ public class Main_17070_파이프옮기기1 {
             }
         }
         
-        int[][][] dp = new int[N+2][N+2][3];
+        int[][][] dp = new int[N+1][N+1][3];
         dp[1][2][0] = 1;
         
         for (int x=1; x<N+1; x++) {
