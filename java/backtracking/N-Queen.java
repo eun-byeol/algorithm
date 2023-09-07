@@ -9,26 +9,24 @@ class Solution {
         return answer;
     }
     
-    public void dfs(int depth, boolean[] col, boolean[] diaUp, boolean[] diaDown, int N) {
-    	if (depth == N) {
+    public void dfs(int row, boolean[] col, boolean[] diaUp, boolean[] diaDown, int N) {
+    	if (row == N) {
             answer++;
             return;
         }
-        
-        for (int i=depth; i<N; i++) {
-            for (int j=0; j<N; j++) {            	
-                if (col[j] || diaUp[i+j] || diaDown[N+(i-j)-1]) continue;
-                col[j] = true;
-                diaUp[i+j] = true;
-                diaDown[N+(i-j)-1] = true;
-                
-                dfs(depth+1, col, diaUp, diaDown, N);
-                
-                col[j] = false;
-                diaUp[i+j] = false;
-                diaDown[N+(i-j)-1] = false;
-            }
-            return;
-        }
+    	
+    	for (int i=0; i<N; i++) {
+    		if (col[i] || diaUp[i+row] || diaDown[N + (row-i) -1]) continue;
+    		
+    		col[i] = true;
+    		diaUp[i+row] = true;
+    		diaDown[N + (row-i) -1] = true;
+    		
+    		dfs(row+1, col, diaUp, diaDown, N);
+    		
+    		col[i] = false;
+    		diaUp[i+row] = false;
+    		diaDown[N + (row-i) -1] = false;
+    	}
     }
 }
