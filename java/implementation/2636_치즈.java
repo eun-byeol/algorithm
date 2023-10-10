@@ -27,8 +27,7 @@ public class Main_2636_치즈 {
 		int time = 0;
 		while (cnt > 0) {
 			time++;
-			int[][] cp = copyBoard(N, M, board);
-			int remove = bfs(0, 0, cp);
+			int remove = bfs(0, 0);
 			if (cnt - remove <= 0) break;
 			cnt -= remove;
 		}
@@ -37,7 +36,7 @@ public class Main_2636_치즈 {
 		System.out.println(cnt);
 	}
 
-	private static int bfs(int r, int c, int[][] pre) {
+	private static int bfs(int r, int c) {
 		Queue<int[]> q = new ArrayDeque<>();
 		int[][] visited = new int[N][M];
 		q.add(new int[] {r, c});
@@ -52,10 +51,10 @@ public class Main_2636_치즈 {
 				int ny = cur[1] + dy[i];
 				if (nx < 0 || nx >= N || ny < 0 || ny >= M || visited[nx][ny] == 1) continue;
 				
-				if (pre[nx][ny] == 0) { // 녹은 곳인 경우
+				if (board[nx][ny] == 0) { // 녹은 곳인 경우
 					q.add(new int[] {nx, ny});
 				}
-				if (pre[nx][ny] == 1) { // 곧 녹아 없어지는 칸
+				if (board[nx][ny] == 1) { // 곧 녹아 없어지는 칸
 					board[nx][ny] = 0;
 					removeCnt++;
 				}
@@ -66,12 +65,10 @@ public class Main_2636_치즈 {
 		return removeCnt;
 	}
 
-	private static int[][] copyBoard(int N, int M, int[][] board) {
-		int[][] cp = new int[N][M];
-		for (int i=0; i<N; i++) {
-			cp[i] = board[i].clone();
-		}
-		return cp;
-	}
-
 }
+
+/*
+
+실수한 포인트 : 녹은 부분을 bfs한다!
+
+*/
