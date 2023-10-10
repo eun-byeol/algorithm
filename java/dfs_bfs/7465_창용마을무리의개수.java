@@ -32,7 +32,8 @@ public class Solution_7465_창용마을무리의개수 {
 			int[] visited = new int[N+1];
 			for (int i=1; i<N+1; i++) {
 				if (visited[i] == 0) {
-					bfs(i, visited);
+					visited[i] = 1;
+					dfs(i, visited);
 					totalCnt++;
 				}
 			}
@@ -42,20 +43,12 @@ public class Solution_7465_창용마을무리의개수 {
 		System.out.print(sb);
 	}
 
-	private static void bfs(int num, int[] visited) {
-		Queue<Integer> q = new ArrayDeque<>();
-		q.add(num);
-		visited[num] = 1;
-		
-		while(!q.isEmpty()) {
-			int cur = q.remove();
-			for (int nxt : graph[cur]) {
-				if (visited[nxt] == 0) {
-					q.add(nxt);
-					visited[nxt] = 1;
-				}
+	private static void dfs(int cur, int[] visited) {
+		for (int nxt : graph[cur]) {
+			if (visited[nxt] == 0) {
+				visited[nxt] = 1;
+				dfs(nxt, visited);
 			}
 		}
 	}
-
 }
