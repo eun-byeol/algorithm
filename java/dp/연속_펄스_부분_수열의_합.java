@@ -1,27 +1,23 @@
 import java.util.*;
+
 class Solution {
-    long getMaxSum(int[] seq, int N) {
-        long psum = 0;
-        long max = 0;
-        for (int i=0; i<N; i++) {
-            psum = Math.max(psum, 0) + seq[i];
+    public long solution(int[] sequence) {
+        long answer = -100001;
+        answer = findMaxSubSum(sequence, 1);
+        answer = Math.max(findMaxSubSum(sequence, -1), answer);
+        return answer;
+    }
+    
+    public long findMaxSubSum(int[] seq, int p) {
+        long psum = seq[0] * p;
+        long max = psum;
+        p *= (-1);
+        
+        for (int i=1; i<seq.length; i++) {
+            psum = Math.max(0, psum) + seq[i] * p;
+            p *= (-1);
             max = Math.max(psum, max);
         }
         return max;
-    }
-    public long solution(int[] sequence) {
-        long answer = 0;
-        int N = sequence.length;
-        int[] seq1 = sequence.clone();
-        int[] seq2 = sequence.clone();
-        for (int i=0; i<N; i+=2) {
-            seq1[i] *= -1;
-        }
-        for (int i=1; i<N; i+=2) {
-            seq2[i] *= -1;
-        }
-        answer = Math.max(getMaxSum(seq1, N), answer);
-        answer = Math.max(getMaxSum(seq2, N), answer);
-        return answer;
     }
 }
