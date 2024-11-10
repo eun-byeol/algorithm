@@ -19,35 +19,40 @@ class Main {
         }
 
         int turn = 0;
+        int in = 0;
+        int out = N-1;
 
         while (true) {
             turn++;
             //1
-            rotateA();
+            in = (in + M - 1) % M;
+            out = (out + M - 1) % M;
 
-            if (A[N-1][1] > 0) { // 하차
-                A[N-1][1] = 0;
+            if (A[out][1] > 0) { // 하차
+                A[out][1] = 0;
             }
 
             // 2
-            for (int i=N-2; i>=0; i--) {
-                if (A[i][1] > 0 && A[i+1][1] == 0 && A[i+1][0] > 0) {
-                    A[i+1][1] = 1;
-                    A[i+1][0]--;
-                    A[i][1] = 0;
-                    if (A[i+1][0] == 0) {
+            for (int i=1; i<N; i++) {
+                int cur = (out + M - i) % M;
+                int nxt = (cur + 1) % M;
+                if (A[cur][1] > 0 && A[nxt][1] == 0 && A[nxt][0] > 0) {
+                    A[nxt][1] = 1;
+                    A[nxt][0]--;
+                    A[cur][1] = 0;
+                    if (A[nxt][0] == 0) {
                         K--;
                     }
-                    if (A[N-1][1] > 0) { // 하차
-                        A[N-1][1] = 0;
+                    if (A[out][1] > 0) { // 하차
+                        A[out][1] = 0;
                     }
                 }
             }
             //3
-            if (A[0][0] > 0) {
-                A[0][1] = 1;
-                A[0][0]--;
-                if (A[0][0] == 0) {
+            if (A[in][0] > 0) {
+                A[in][1] = 1;
+                A[in][0]--;
+                if (A[in][0] == 0) {
                     K--;
                 }
             }
@@ -56,17 +61,5 @@ class Main {
             }
         }
         System.out.println(turn);
-    }
-
-    static void rotateA() {
-        int d = A[M-1][0];
-        int r = A[M-1][1];
-
-        for (int i=M-2; i>=0; i--) {
-            A[i+1][0] = A[i][0];
-            A[i+1][1] = A[i][1];
-        }
-        A[0][0] = d;
-        A[0][1] = r;
     }
 }
